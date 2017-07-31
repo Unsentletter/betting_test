@@ -3,12 +3,18 @@ const data = ["Bet:W:1:3", "Bet:W:2:4", "Bet:W:3:5", "Bet:W:4:5", "Bet:W:1:16", 
 const winCommission = 0.15;
 const placeCommission = 0.12;
 const exactaCommission = 0.18;
-let winnerPool, placePool, exactaPool, result, first, second, third;
+let winnerPool, placePool1, placePool2, placePool3, exactaPool;
 let winningBets = [];
-let placingBets = [];
+let placingBets1 = [];
+let placingBets2 = [];
+let placingBets3 = [];
 let winNum = 0;
 let placeNum = 0;
 let exactaNum = 0;
+
+const first = getResults(data).first;
+const second = getResults(data).second;
+const third = getResults(data).third;
 
 const bets = data.map(b => {
   const bet = b.split(':');
@@ -32,31 +38,27 @@ function getResults(data) {
   }
 }
 
-console.log(getResults(data).first);
-
-
 for (let i=0; i < bets.length; i++) {
-
   if (bets[i].type === 'W') {
     winnerPool = winNum += parseInt(bets[i].amount);
-
-    if (bets[i].number === getResults(data).first) {
+    if (bets[i].number === first) {
       winningBets.push(bets[i])
     }
-
   } else if (bets[i].type === 'P') {
-    placePool = placeNum += parseInt(bets[i].amount)
-
-    if (bets[i].number === getResults(data).second) {
-      placingBets.push(bets[i])
+    if (bets[i].number === first) {
+      placingBets1.push(bets[i]);
+      placePool1 = placeNum += parseInt(bets[i].amount);
+    } else if (bets[i].number === second) {
+      placingBets2.push(bets[i]);
+      placePool2 = placeNum += parseInt(bets[i].amount);
+    } else if (bets[i].number === third) {
+      placingBets3.push(bets[i]);
+      placePool3 = placeNum += parseInt(bets[i].amount);
     }
-
   } else if (bets[i].type === 'E') {
     exactaPool = exactaNum += parseInt(bets[i].amount);
-
   }
 }
-
 
 function takeCommissionWin(pool, commission) {
   return pool * commission;
@@ -66,10 +68,27 @@ function poolMinusComission(pool, commission) {
   return pool - commission;
 }
 
-console.log(winnerPool);
-console.log('winners pool commission', takeCommissionWin(winnerPool, winCommission));
-console.log('remaining pool', poolMinusComission(winnerPool, takeCommissionWin(winnerPool, winCommission)));
-console.log(placingBets);
+function calculateDivs(payingBets, remainingPool) {
+  const pool = payingBets.reduce((sum, bet) => sum + bet.amount, 0);
+  const percentage = payingBets[2].amount / pool;
+  const percentageOfPool = remainingPool * percentage;
+  const dividend = percentageOfPool / payingBets[2].amount;
 
-console.log('place pool commission', takeCommissionWin(placePool, placeCommission));
-console.log('exacta pool commission', takeCommissionWin(exactaPool, exactaCommission));
+  return dividend;
+}
+
+let winnerPrizePool = poolMinusComission(winnerPool, takeCommissionWin(winnerPool, winCommission));
+let placePrizePool1 = poolMinusComission(placePool1, takeCommissionWin(placePool1, placeCommission));
+let placePrizePool2 = poolMinusComission(placePool1, takeCommissionWin(placePool1, placeCommission));
+let placePrizePool3 = poolMinusComission(placePool1, takeCommissionWin(placePool1, placeCommission));
+
+
+console.log('winner divs', calculateDivs(winningBets, winnerPrizePool));
+console.log('place divs', calculateDivs(placingBets1, placePrizePool1));
+console.log('place divs', calculateDivs(placingBets2, placePrizePool2));
+console.log('place divs', calculateDivs(placingBets3, placePrizePool3));
+console.log('winners pool commission', takeCommissionWin(winnerPool, winCommission));
+console.log('remaining pool', winnerPrizePool);
+//
+// console.log('place pool commission', takeCommissionWin(placePool, placeCommission));
+// console.log('exacta pool commission', takeCommissionWin(exactaPool, exactaCommission));
