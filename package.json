@@ -1,0 +1,26 @@
+{
+  "name": "tab-test",
+  "version": "1.0.0",
+  "description": "1. Clone repo 2. cd into folder 3. enter 'node standard' into the terminal",
+  "main": "standard.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Unsentletter/betting_test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Unsentletter/betting_test/issues"
+  },
+  "homepage": "https://github.com/Unsentletter/betting_test#readme",
+  "dependencies": {
+    "chai": "^4.1.0",
+    "mocha": "^3.4.2"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.5"
+  }
+}
