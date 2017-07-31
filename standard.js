@@ -76,9 +76,7 @@ function calculateDivs(payingBets, remainingPool) {
   const pool = payingBets.reduce((sum, bet) => sum + bet.amount, 0);
   const percentage = payingBets[0].amount / pool;
   const percentageOfPool = remainingPool * percentage;
-  const dividend = percentageOfPool / payingBets[0].amount;
-
-  return dividend;
+  return percentageOfPool / payingBets[0].amount;
 }
 
 let winnerPrizePool = poolMinusComission(winnerPool, takeCommission(winnerPool, winCommission));
@@ -90,12 +88,8 @@ let placeDivs2 = calculateDivs(placingBets2, placePrizePool).toFixed(2);
 let placeDivs3 = calculateDivs(placingBets3, placePrizePool).toFixed(2);
 let exactaDivs = calculateDivs(exactaBets, exactaPrizePool).toFixed(2);
 
-console.log(`Win:${first}:${winningDivs}`);
-console.log(`Place:${first}:${placeDivs1}`);
-console.log(`Place:${second}:${placeDivs2}`);
-console.log(`Place:${third}:${placeDivs3}`);
-console.log(`Exacta:${first},${second}:${exactaDivs}`);
-
-//
-// console.log('place pool commission', takeCommissionWin(placePool, placeCommission));
-// console.log('exacta pool commission', takeCommissionWin(exactaPool, exactaCommission));
+process.stdout.write(String(`Win:${first}:${winningDivs}\n`));
+process.stdout.write(String(`Place:${first}:${placeDivs1}\n`));
+process.stdout.write(String(`Place:${second}:${placeDivs2}\n`));
+process.stdout.write(String(`Place:${third}:${placeDivs3}\n`));
+process.stdout.write(String(`Exacta:${first},${second}:${exactaDivs}\n`));
