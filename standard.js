@@ -84,15 +84,18 @@ function calculateDivs(payingBets, remainingPool) {
 let winnerPrizePool = poolMinusComission(winnerPool, takeCommission(winnerPool, winCommission));
 let placePrizePool = parseInt(poolMinusComission(placePool, takeCommission(placePool, placeCommission))) / 3;
 let exactaPrizePool = poolMinusComission(exactaPool, takeCommission(exactaPool, exactaCommission));
+let winningDivs = calculateDivs(winningBets, winnerPrizePool).toFixed(2);
+let placeDivs1 = calculateDivs(placingBets1, placePrizePool).toFixed(2);
+let placeDivs2 = calculateDivs(placingBets2, placePrizePool).toFixed(2);
+let placeDivs3 = calculateDivs(placingBets3, placePrizePool).toFixed(2);
+let exactaDivs = calculateDivs(exactaBets, exactaPrizePool).toFixed(2);
 
-let test = placePrizePool / 3;
+console.log(`Win:${first}:${winningDivs}`);
+console.log(`Place:${first}:${placeDivs1}`);
+console.log(`Place:${second}:${placeDivs2}`);
+console.log(`Place:${third}:${placeDivs3}`);
+console.log(`Exacta:${first},${second}:${exactaDivs}`);
 
-console.log('winner divs', calculateDivs(winningBets, winnerPrizePool));
-console.log('place divs1', calculateDivs(placingBets1, placePrizePool));
-console.log('place divs2', calculateDivs(placingBets2, placePrizePool));
-console.log('place divs3', calculateDivs(placingBets3, placePrizePool));
-console.log('exacta divs', calculateDivs(exactaBets, exactaPrizePool));
-console.log(exactaBets);
 //
 // console.log('place pool commission', takeCommissionWin(placePool, placeCommission));
 // console.log('exacta pool commission', takeCommissionWin(exactaPool, exactaCommission));
